@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Code Cleaner</title>
+        
+        <!-- Added connect-src to safely allow Gemini API calls over the network -->
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self';
+      style-src 'self'; img-src 'self' data:; connect-src 'self' https://generativelanguage.googleapis.com;">
+
+        <script src="./theme-init.js"></script>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+
+    <body>
+
+        <header>
+            <h1>Code Cleaner</h1>
+            <div class="header-info">
+                <p>Paste your snippet on the left and strip those pesky line numbers.</p>
+                <div class="header-actions">
+                    <div class="theme-switcher">
+                        <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">🌙</button>
+                    </div>
+                    <!-- Settings Button -->
+                    <button id="settings-btn" class="icon-btn" title="Settings" aria-label="Open Settings">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="workspace-scroll-container">
+            <div class="headers-row">
+                <div class="panel-header-item">
+                    <span>1. Input</span>
+                    <small>Raw code</small>
+                </div>
+                <div class="panel-header-item">
+                    <span>2. AI Analysis</span>
+                    <small id="ai-status">Waiting for input...</small>
+                </div>
+                <div class="panel-header-item">
+                    <span>3. Result</span>
+                    <small>Clean code</small>
+                </div>
+            </div>
+            
+            <main class="editor-container">
+                <!-- Panel 1: Pure Input -->
+                <section class="panel">
+                    <textarea id="editor-textarea" spellcheck="false" placeholder="Paste your code here..."></textarea>
+                </section>
+
+                <!-- Panel 2: Visual Feedback -->
+                <section class="panel preview-panel">
+                    <div id="preview-area"></div>
+                </section>
+
+                <!-- Panel 3: Final Output -->
+                <section class="panel output-panel">
+                    <pre id="output-area"></pre>
+                </section>
+            </main>
+        </div>
+
+        <footer>
+            <div class="controls">
+                <div class="actions">
+                    <div class="footer-column">
+                        <button id="btn-open" class="secondary-btn">📂 Open File</button>
+                        <button id="btn-reset" class="secondary-btn">Reset</button>
+                        <button id="btn-remove" class="secondary-btn">Clean Only</button>
+                    </div>
+                    <div class="footer-column" id="verify-column">
+                        <button id="btn-verify" class="primary-btn" disabled>Verify & Repair with Gemma</button>
+                        
+                        <!-- Diff Navigation Controls -->
+                        <div id="diff-nav-controls" class="hidden">
+                            <span>Diff</span>
+                            <button id="btn-prev-diff" class="secondary-btn icon-btn" title="Previous Change" aria-label="Previous Change">↑</button>
+                            <span id="diff-counter">0/0</span>
+                            <button id="btn-next-diff" class="secondary-btn icon-btn" title="Next Change" aria-label="Next Change">↓</button>
+                        </div>
+                    </div>
+                    <div class="footer-column space-between-items">
+                        <div>
+                            <button id="btn-copy" class="secondary-btn" disabled>Copy Clean Code</button>
+                            <button id="btn-save" class="primary-btn" disabled>💾 Save File</button>
+                        </div>
+                        <button id="history-btn" class="icon-btn" title="Session History" aria-label="View Session History">📜</button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <div id="feedback-bar" class="feedback-bar fb-hidden"></div>
+
+        <!-- History Modal -->
+        <div id="history-modal" class="modal">
+            <div class="modal-content">
+                <h3>Session History</h3>
+                <div id="history-list">
+                    <!-- History items injected here -->
+                </div>
+                <div class="modal-actions">
+                    <button id="close-history" class="secondary-btn">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div id="settings-modal" class="modal">
+            <div class="modal-content">
+                <h3>App Settings</h3>
+                <div class="input-group">
+                    <label for="api-key-input">Gemini API Key</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="api-key-input" placeholder="Paste your API key here...">
+                        <button type="button" id="toggle-api-visibility" class="small-icon-btn">👁️</button>
+                    </div>
+                    <small>Get your key at <button id="lnk-external-studio" class="link-lookalike">Google AI Studio</button></small>
+                </div>
+                <div class="input-group">
+                    <label for="model-select">AI Model</label>
+                    <select id="model-select">
+                        <option value="gemma-4-31b-it">Gemma 4 31B (High Intelligence)</option>
+                        <option value="gemma-4-26b-a4b-it">Gemma 4 26B (Fast/Light)</option>
+                    </select>
+                    <small id="model-description" class="model-desc">Best for complex structural repairs and deep reasoning (uses high-level thinking).</small>
+                </div>
+                <div class="modal-actions">
+                    <button id="save-settings" class="primary-btn">Save Settings</button>
+                    <button id="close-settings" class="secondary-btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="./renderer.js"></script>
+    </body>
+</html>

@@ -1,0 +1,794 @@
+:root {
+    --panel-h-padding: 1.5rem;
+}
+
+/* Cobalt Theme Variables */
+
+.theme-dark {
+    --bg-dark: #001d3d;
+    --bg-lighter: #003566;
+    --bg-panel: #000814;
+    --text-main: #e0e1dd;
+    --text-muted: #a2b9d6;
+    --accent-color: #4ade80;
+    --accent-hover: #22c55e;
+    --accent-text: #001d3d;
+    --highlight-bg: rgba(74, 222, 128, 0.2);
+    --highlight-border: #4ade80;
+    --border-color: #001529;
+    --error-color: #c53030;
+    --error-bg-hover: rgba(197, 48, 48, 0.15);
+    --text-highlight: #ce9178;
+    --caret-color: #ffffff;
+
+    /* Custom Scrollbar for Dark Mode */
+    --scrollbar-bg: #000814;
+    --scrollbar-thumb: #003566;
+    --scrollbar-thumb-hover: #004080;
+}
+
+.theme-light {
+    --bg-dark: #f0f5ff;
+    --bg-lighter: #e0eaff;
+    --bg-panel: #ffffff;
+    --text-main: #001d3d;
+    --text-muted: #5c6b80;
+    --accent-color: #166534;
+    --accent-hover: #14532d;
+    --accent-text: #ffffff;
+    --highlight-bg: rgba(22, 101, 52, 0.1);
+    --highlight-border: #166534;
+    --border-color: #cbd5e0;
+    --error-color: #c53030;
+    --error-bg-hover: rgba(197, 48, 48, 0.1);
+    --text-highlight: #0047ab;
+    --caret-color: #001d3d;
+
+    /* Custom Scrollbar for Light Mode */
+    --scrollbar-bg: #ffffff;
+    --scrollbar-thumb: #e0eaff;
+    --scrollbar-thumb-hover: #a7b7c7;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    /* Prevent body from scrolling */
+    overflow: hidden;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Header Styling */
+header {
+    /* Added 12px right padding to perfectly align header actions with the scrollbar offset */
+    padding: 1rem calc(var(--panel-h-padding) + 12px) 2rem var(--panel-h-padding);
+    background-color: var(--bg-lighter);
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.header-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Center the text */
+    position: relative;
+    width: 100%;
+}
+
+header p {
+    font-size: 1.3rem;
+    /* Tiny bump for optimal balance */
+    color: var(--text-muted);
+}
+
+header h1 {
+    font-size: 2.2rem;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+/* Header Actions: Float on the far right */
+.header-actions {
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    column-gap: 0.7rem;
+}
+
+/* Base style for the small icon-like buttons in the header and footer */
+button.icon-btn {
+    color: var(--text-muted);
+    background: transparent;
+    /* Less vibrant, professional border */
+    border: 1px solid var(--text-muted);
+    /* Slightly more square for a technical look */
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    transition: all 0.2s ease;
+}
+
+button.icon-btn:hover {
+    /* Muted accent hover */
+    color: var(--accent-color) !important;
+    background: rgba(16, 185, 129, 0.15) !important;
+    border-color: var(--accent-color) !important;
+}
+
+#theme-toggle-btn,
+#history-btn {
+    font-size: 1.1rem;
+    margin-left: auto;
+}
+
+#settings-btn svg {
+    width: 17px;
+    height: 17px;
+    transition: transform 0.3s ease;
+}
+
+/* ==========================================================================
+   Fixed Header Row (Sits above the scroll container)
+   ========================================================================== 
+*/
+.headers-row {
+    display: flex;
+    width: 100%;
+    background-color: var(--border-color);
+    gap: 1px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+.panel-header-item {
+    flex: 1;
+    min-width: 480px;
+    padding: 0.8rem var(--panel-h-padding);
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.panel-header-item small {
+    font-size: 0.95rem;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.ai-thinking {
+    animation: pulse 1.5s infinite ease-in-out;
+    color: var(--accent-color) !important;
+    font-weight: 700;
+    /* Extra weight for legibility */
+}
+
+/* Light mode specific legibility boost */
+.theme-light .ai-thinking {
+    color: #064e3b !important;
+    /* Deeper Emerald for light mode */
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    /* Slightly higher opacity for better legibility */
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   Unified Workspace Scrolling Layout
+   ========================================================================== 
+*/
+
+/* This wrapper acts as the single window scroll-viewport for the workspaces */
+.workspace-scroll-container {
+    flex: 1;
+    overflow-y: scroll; /* Force vertical scrollbar for consistent width calculations */
+    overflow-x: auto;
+    /* Handles all horizontal and vertical scrolling natively */
+    background-color: var(--border-color);
+}
+
+/* The actual panel container - dynamically stretches to match layout sizes */
+.editor-container {
+    display: flex;
+    min-width: 100%;
+    min-height: 100%;
+    gap: 1px;
+    /* Divider line color comes from the parent's background color */
+    background-color: var(--border-color);
+}
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 480px;
+    background-color: var(--bg-dark);
+}
+
+
+/* Specific background for the preview and output panels */
+.preview-panel,
+.output-panel {
+    background-color: var(--bg-lighter);
+}
+
+/* ==========================================================================
+   The Dual-Layer Interactive Input Overlay
+   ========================================================================== 
+*/
+
+/* Exact typography properties applied to all 3 panels for visual consistency */
+#editor-textarea,
+#preview-area,
+#preview-area div,
+#output-area {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 16px;
+    line-height: 1.6;
+    tab-size: 4;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Sizing & padding configurations for the panels */
+#editor-textarea,
+#preview-area,
+#output-area {
+    width: 100%;
+    min-height: 100%;
+    padding: 1rem var(--panel-h-padding);
+    margin: 0;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+#preview-area {
+    background-color: var(--bg-lighter);
+    color: var(--text-main);
+}
+
+#editor-textarea {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    caret-color: var(--caret-color);
+    resize: none;
+}
+
+#editor-textarea::selection {
+    background: rgba(0, 122, 204, 0.4);
+    color: white;
+}
+
+/* Output Display Node (Right Panel) */
+#output-area {
+    flex: 1;
+    background-color: var(--bg-lighter);
+    color: var(--text-highlight);
+    margin: 0;
+    outline: none;
+    overflow: hidden;
+    /* Scroll belongs strictly to the parent container */
+    min-height: 100%;
+    /* Ensure it fills the panel if empty */
+}
+
+/* The Line Highlight Styling */
+.highlight {
+    background-color: var(--highlight-bg);
+    color: var(--text-main);
+    font-weight: 700;
+    padding: 0 4px;
+    margin: 0 2px;
+    border-radius: 4px;
+    border: 1px solid var(--highlight-border);
+    box-shadow: 0 0 8px var(--highlight-bg);
+    display: inline-block;
+    line-height: 1.2;
+}
+
+/* Diff Styling */
+.diff-added {
+    background-color: rgba(74, 222, 128, 0.3);
+    color: var(--text-main);
+}
+.diff-removed {
+    background-color: rgba(220, 38, 38, 0.3);
+    color: var(--text-main);
+    text-decoration: line-through;
+}
+
+/* ==========================================================================
+   Footer and Button Controls
+   ========================================================================== 
+*/
+footer {
+    /* Added 12px right padding to match the scrollbar width in the workspace container */
+    padding: 1rem 12px 1rem 0;
+    background-color: var(--bg-lighter);
+    border-bottom: 1px solid var(--border-color); /* Kept consistent with theme */
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow-y: hidden;
+    /* Removed forced scrollbar as requested */
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    width: 100%;
+    gap: 1px;
+    /* Matches the vertical split gap */
+}
+
+.footer-column {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    gap: 1rem;
+    min-width: 480px;
+    padding: 0 var(--panel-h-padding);
+    /* Right align #history-btn */
+    position: relative;
+}
+
+.space-between-items {
+    justify-content: space-between;
+}
+
+.footer-column.space-between-items>div {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Button Styling */
+button {
+    padding: 0.7rem 1.4rem;
+    font-size: 1rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+button:focus-visible {
+    box-shadow: 0 0 0 3px var(--highlight-bg);
+}
+
+
+.primary-btn {
+    background-color: var(--accent-color);
+    color: var(--accent-text);
+}
+
+.primary-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+.secondary-btn {
+    background-color: var(--bg-panel);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background-color: var(--bg-lighter);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#editor-textarea:disabled {
+    cursor: not-allowed;
+}
+
+/* Specific Button Customizations */
+
+/* Remove Button: Transparent, bluish hover */
+#btn-remove {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+#btn-remove:hover:not(:disabled) {
+    background-color: rgba(0, 122, 204, 0.15);
+    color: var(--accent-color);
+}
+
+/* Reset Button: Keep red/danger styling */
+#btn-reset {
+    border: 1px solid var(--error-color);
+    background-color: transparent;
+    color: var(--text-main);
+}
+
+#btn-reset:hover:not(:disabled) {
+    color: var(--error-color);
+    background-color: var(--error-bg-hover);
+}
+
+/* Modal Overlay */
+.modal {
+    /* Hidden by default */
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    padding: 2.5rem;
+    border-radius: 12px;
+    width: 550px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: modalSlideUp 0.3s ease-out;
+}
+
+.modal-content #history-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    border-left: 4px solid transparent;
+    background: rgba(0, 0, 0, 0.05);
+    animation: historyItemIn 0.2s ease-out;
+}
+
+.theme-dark .history-item {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.history-item.history-item-info {
+    border-left-color: #3b82f6;
+}
+
+.history-item.history-item-success {
+    border-left-color: var(--accent-color);
+}
+
+.history-item.history-item-error {
+    border-left-color: var(--error-color);
+}
+
+.history-time {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.history-message {
+    color: var(--text-main);
+    text-align: left;
+    word-break: break-word;
+}
+
+@keyframes historyItemIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Elevate modal in dark mode */
+.theme-dark .modal-content {
+    background-color: var(--bg-lighter);
+    /* Use a lighter shade to pop */
+    border-color: var(--accent-color);
+    /* Subtle accent glow */
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6), 0 0 10px rgba(74, 222, 128, 0.1);
+}
+
+@keyframes modalSlideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-content h3 {
+    margin-bottom: 1.5rem;
+    color: var(--accent-color);
+    font-size: 1.25rem;
+}
+
+.input-group {
+    margin-bottom: 2rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.8rem;
+    color: var(--text-main);
+    /* Increased for better legibility */
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.password-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.input-group input,
+.input-group select {
+    flex: 1;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    padding: 1rem;
+    border-radius: 6px;
+    font-family: inherit;
+    /* Increased for better legibility */
+    font-size: 1.09rem;
+    outline: none;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: var(--accent-color);
+}
+
+.input-group select {
+    width: 100%;
+}
+
+.small-icon-btn {
+    background: var(--bg-dark);
+    /* Contrast against modal bg */
+    border: 1px solid var(--border-color);
+    padding: 0 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.small-icon-btn:hover {
+    background: var(--border-color);
+}
+
+.input-group small {
+    color: var(--text-muted);
+    font-size: 1rem;
+    /* Increased for better legibility */
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.input-group a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.input-group a:hover {
+    text-decoration: underline;
+}
+
+.link-lookalike {
+    background: transparent;
+    border: none;
+    color: var(--accent-color);
+    text-decoration: underline;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+    transition: color 0.2s ease;
+}
+
+.link-lookalike:hover {
+    color: var(--accent-hover);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+/* Copy Button: success state high-contrast text */
+#btn-copy:hover:not(:disabled) {
+    background-color: var(--bg-lighter);
+}
+
+#btn-copy.success {
+    background-color: var(--accent-color);
+    color: var(--bg-panel);
+    border-color: var(--accent-color);
+}
+
+/* Danger Button: Red for Abort/Reset actions */
+.danger-btn {
+    background-color: var(--error-color) !important;
+    color: white !important;
+    border-color: var(--error-color) !important;
+}
+
+.danger-btn:hover {
+    background-color: #a52828 !important;
+    /* Slightly darker red */
+}
+
+/* Global Scrollbar Customization */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-bg, #f1f1f1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb, #888);
+    border-radius: 6px;
+    border: 3px solid var(--scrollbar-bg, #f1f1f1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover, #555);
+}
+
+/* Feedback Bar Styling */
+.feedback-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    padding: 1.1rem 1.5rem;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    z-index: 3000;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.feedback-bar.fb-hidden {
+    opacity: 0;
+    transform: translateY(100%);
+    pointer-events: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.feedback-info {
+    background-color: #0078D4;
+}
+
+.feedback-success {
+    background-color: var(--accent-color);
+    color: var(--accent-text);
+}
+
+.feedback-error {
+    background-color: var(--error-color);
+    color: white;
+}
+
+.no-transition * {
+    transition: none !important;
+}
+
+#diff-nav-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: space-evenly;
+    color: var(--text-main);
+    background-color: transparent;
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    padding: 0.35rem 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+#diff-nav-controls button.icon-btn {
+    width: 28px;
+    height: 28px;
+}
+
+#diff-counter {
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+#btn-prev-diff {
+    margin-left: 0.2rem;
+}

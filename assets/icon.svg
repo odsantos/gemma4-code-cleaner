@@ -1,0 +1,26 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+    <!-- Cobalt Squircle Background -->
+    <rect width="512" height="512" rx="110" fill="#001D3D"/>
+    
+    <!-- Stylized Code Lines -->
+    <rect x="120" y="150" width="80" height="20" rx="10" fill="#778DA9" />
+    <rect x="210" y="150" width="160" height="20" rx="10" fill="#E0E1DD" />
+    
+    <rect x="120" y="220" width="80" height="20" rx="10" fill="#778DA9" />
+    <rect x="210" y="220" width="120" height="20" rx="10" fill="#E0E1DD" />
+    
+    <rect x="120" y="290" width="80" height="20" rx="10" fill="#778DA9" />
+    <rect x="210" y="290" width="180" height="20" rx="10" fill="#E0E1DD" />
+
+    <!-- The "Cleaning" Sparkle (Green Accent) -->
+    <path d="M380 120L390 150L420 160L390 170L380 200L370 170L340 160L370 150L380 120Z"
+      fill="#4ADE80" />
+    <path d="M440 240L445 255L460 260L445 265L440 280L435 265L420 260L435 255L440 240Z"
+      fill="#4ADE80" />
+    
+    <!-- "Eraser" / Minus Symbol representing removal -->
+    <rect x="135" y="155" width="50" height="10" rx="5" fill="#001D3D" />
+    <rect x="135" y="225" width="50" height="10" rx="5" fill="#001D3D" />
+    <rect x="135" y="295" width="50" height="10" rx="5" fill="#001D3D" />
+</svg>

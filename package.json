@@ -1,0 +1,41 @@
+{
+  "name": "code-cleaner",
+  "version": "1.0.0",
+  "description": "Professional AI-Powered Code Sanitization Utility leveraging a hybrid Regex and Gemma 4 approach to strip line numbers and repair terminal-induced syntax corruption",
+  "keywords": [
+    "gemma4",
+    "code",
+    "cleaner",
+    "line",
+    "numbers",
+    "remover",
+    "ai-repair"
+  ],
+  "homepage": "https://github.com/odsantos/gemma4-code-cleaner#readme",
+  "bugs": {
+    "url": "https://github.com/odsantos/gemma4-code-cleaner/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/odsantos/gemma4-code-cleaner.git"
+  },
+  "license": "ISC",
+  "author": "Osvaldo Santos",
+  "type": "commonjs",
+  "main": "main.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@google/genai": "^2.4.0",
+    "diff": "^9.0.0",
+    "electron-store": "^11.0.2"
+  },
+  "devDependencies": {
+    "electron": "^42.1.0"
+  }
+}
