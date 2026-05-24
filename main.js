@@ -221,7 +221,7 @@ async function createWindow() {
     menu.popup();
   });
 
-  // Menu.setApplicationMenu(null);  Leave it while developing
+  Menu.setApplicationMenu(null);
 
   win.once('ready-to-show', () => {
     win.show();
@@ -230,5 +230,7 @@ async function createWindow() {
 
 app.whenReady().then(createWindow);
 app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit();
+});
   if (process.platform !== 'darwin') app.quit();
 });
